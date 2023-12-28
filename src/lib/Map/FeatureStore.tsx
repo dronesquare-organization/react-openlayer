@@ -100,7 +100,7 @@ export function FeatureStore({
   }, [selectedFeature]);
 
   return (
-    <FeatureContext.Provider value={providerValue}>
+    <FeatureContext.Provider value={}>
       {isAbledSelection && <SelectedFeature feature={selectedFeature} />}
       {children}
     </FeatureContext.Provider>
