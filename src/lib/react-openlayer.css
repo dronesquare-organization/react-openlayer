@@ -1,0 +1,17 @@
+.hover-cursor {
+  cursor: pointer;
+}
+
+.ol-full-screen {
+  visibility: hidden;
+}
+
+.react-openlayers-map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: sans-serif;
+}
