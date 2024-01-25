@@ -85,6 +85,7 @@ export function ModifyAnnotation({
     map.setProperties({ ...existMapProperties, isModifying: isActive });
   }, [isActive]);
 
+  // 수정을 위해 Modify객체를 추가합니다.
   useEffect(() => {
     if (clickedAnnotation && !target && isActive) {
       if (!modifyInteractionRef.current) {
@@ -164,6 +165,7 @@ export function ModifyAnnotation({
       }
     };
   }, [clickedAnnotation, map, onModifyEnd, onModifyStart, isActive, target]);
+
   useEffect(() => {
     if (clickedAnnotation && target && isActive) {
       if (!modifyInteractionRef.current) {

@@ -70,6 +70,7 @@ export function PointDrawButton({
     })
   );
 
+  // onCanvas에 따라서 드로잉의 결과물을 지도위에 남길지 아닐지를 결정하는 부분입니다.
   useEffect(() => {
     drawRef.current = new Draw({
       source: onCanvas ? drawVectorSource : undefined,
@@ -90,6 +91,7 @@ export function PointDrawButton({
       }),
     });
   }, [onCanvas]);
+
   const startDrawing = () => {
     if (onClick) {
       onClick();
@@ -148,6 +150,7 @@ export function PointDrawButton({
     };
   }, []);
 
+  // 어노테이션을 그릴때 다른 어노테이션의 버텍스와 라인에 자석처럼 붙게 하는 기능을 추가합니다.
   useEffect(() => {
     if (!isActive) {
       map.removeInteraction(drawRef.current);

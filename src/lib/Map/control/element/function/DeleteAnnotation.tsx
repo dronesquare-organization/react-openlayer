@@ -29,6 +29,9 @@ export function DeleteAnnotation({
   const isActive = buttonId === selectedButtonId;
   const selectInteractionRef = useRef<Select | null>(null);
 
+  // 선택한 곳에 geometry를 가지고 있는 피처가 있으면
+  // 피처의 properties를 참고해 그 안에 있는 벡터에서 해당 피처를 제거
+  // 제거됨과 동시에 선택해제
   const removeSelectedFeatures = useCallback(
     (event: SelectEvent) => {
       const selectedFeatures = event.selected;
@@ -51,6 +54,7 @@ export function DeleteAnnotation({
     [onDeleteChange, selectFeature]
   );
 
+  // select 이벤트를 통해 removeSelectedFeatures 동작 실행되도록 이벤트 설정
   useEffect(() => {
     if (isActive) {
       if (!selectInteractionRef.current) {

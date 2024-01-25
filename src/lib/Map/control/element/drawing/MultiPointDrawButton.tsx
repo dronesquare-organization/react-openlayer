@@ -64,6 +64,8 @@ export function MultiPointDrawButton({
   const [features, setFeatures] = useState<Feature<Geometry>[]>([]);
   // const [isDrawing, setIsDrawing] = useState(false);
 
+  // drawRef에 위치한 MultiPoint 타입의 Draw 객체를 map addInteraction 추가한 순간부터 draw가 시작됩니다.
+  // 현재 그리는 상태인지를 표시하기 위해 map 객체에 properties를 두고 있으며 isDrawing이 그 상태를 나타냅니다.
   const startDrawing = () => {
     if (onClick) {
       onClick();
@@ -76,9 +78,14 @@ export function MultiPointDrawButton({
     map.addInteraction(drawRef.current);
   };
 
+  // 멀티포인트는 드로잉이 두단계로 나뉘어 진행됩니다.
+  // 군집되는 멀티포인트가 추가되는 단계와 최종으로 그리기가 마무리 되는 단계입니다.
+  // drawing 함수는 군집한 멀티포인트가 추가되는 단계에서 사용되는 함수입니다.
+  // 추가되는 각 포인트의 프로퍼티들에 정보가 추가됩니다.
   const drawing = (event: DrawEvent) => {
     const feature = event.feature;
     const geometry = feature.getGeometry() as Point;
+    // 여기서 추가된 정보는 마우스로 피처를 클릭하고 어떤 동작을 하기 위해 추가했습니다.
     feature.setProperties({
       shape: "MultiPoint",
       isModifying: false,
@@ -86,9 +93,14 @@ export function MultiPointDrawButton({
       layer: vectorLayerRef.current,
       positions: geometry.getCoordinates(),
     });
+
+    // 군집한 포인트들을 모아 한번에 마무리하기 위해 상태에 올려둡니다.
     setFeatures([...features, feature]);
   };
 
+  // 멀티포인트 드로잉이 최종 마무리되면 onEnd에 모은 포인트들이 반환되고
+  // removeInteraction을 통해 드로우 모드가 해체됨과 동시에 맵의 properties 안에 isDrawing이 false로 변경됩니다.
+  // setTimeout이 걸려있는 이유는 isDrawing을 바라보는 다른 기능에서, isDrawing이 false가 되자마자 특정 동작을 시작하는데 드로잉이 완료될때까지 시간이 걸려 큐를 달리하기 위해 들어가 있습니다.
   const completeDrawing = () => {
     if (onEnd && features.length > 0) {
       onEnd(features);
