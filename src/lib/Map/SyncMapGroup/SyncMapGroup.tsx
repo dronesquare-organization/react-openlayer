@@ -41,6 +41,7 @@ export interface SyncMapGroupProps {
 }
 
 export interface SyncMapContextProps {
+  controlledRotation: number;
   controlledCenter: Location;
   controlledZoomLevel: number;
   adjustCenter: (location: Location) => void;
@@ -99,6 +100,7 @@ export const SyncMapGroup = ({
 
   const value = useMemo(
     () => ({
+      controlledRotation,
       controlledCenter,
       controlledZoomLevel,
       adjustCenter,
@@ -108,6 +110,7 @@ export const SyncMapGroup = ({
       adjustRotate,
     }),
     [
+      controlledRotation,
       controlledCenter,
       controlledZoomLevel,
       adjustCenter,

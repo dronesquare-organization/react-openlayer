@@ -87,8 +87,13 @@ export const SyncMap = ({
   );
   const drawVectorSource = useRef<VectorSource>(new VectorSource());
 
-  const { adjustCenter, onWheelHandler, onZoomHandler, adjustRotate } =
-    useSyncMapContext();
+  const {
+    controlledRotation,
+    adjustCenter,
+    onWheelHandler,
+    onZoomHandler,
+    adjustRotate,
+  } = useSyncMapContext();
 
   const onMouseUpOnMap = useCallback(() => {
     if (!isDecoupled) {
@@ -113,9 +118,8 @@ export const SyncMap = ({
     const map = mapObj.current;
 
     function zoomHandler(e: MapBrowserEvent<any>) {
-      const rotation = map.getView().getRotation();
       onZoomHandler(e, map);
-      adjustRotate(rotation);
+      adjustRotate(controlledRotation);
     }
 
     map.on("pointerdrag", zoomHandler);
@@ -123,7 +127,7 @@ export const SyncMap = ({
     return () => {
       map.un("pointerdrag", zoomHandler);
     };
-  }, [onZoomHandler]);
+  }, [onZoomHandler, controlledRotation]);
 
   useLayoutEffect(() => {
     mapObj.current.addLayer(osmRef.current);
